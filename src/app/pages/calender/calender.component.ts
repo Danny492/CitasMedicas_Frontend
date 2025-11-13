@@ -1,4 +1,4 @@
-import { KeyValuePipe } from '@angular/common';
+import { CommonModule, KeyValuePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 
@@ -8,6 +8,10 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { ModalComponent } from '../../shared/components/ui/modal/modal.component';
+import { DatePickerComponent } from "../../shared/components/form/date-picker/date-picker.component";
+import { TimePickerComponent } from "../../shared/components/form/time-picker/time-picker.component";
+import { SelectComponent } from "../../shared/components/form/select/select.component";
+import { LabelComponent } from "../../shared/components/form/label/label.component";
 
 interface CalendarEvent extends EventInput {
   extendedProps: {
@@ -19,10 +23,14 @@ interface CalendarEvent extends EventInput {
   selector: 'app-calender',
   imports: [
     FormsModule,
-    KeyValuePipe,
     FullCalendarModule,
-    ModalComponent
-  ],
+    ModalComponent,
+    CommonModule,
+    DatePickerComponent,
+    TimePickerComponent,
+    SelectComponent,
+    LabelComponent
+],
   templateUrl: './calender.component.html',
   styles: ``
 })
@@ -84,7 +92,7 @@ export class CalenderComponent {
       eventClick: (info) => this.handleEventClick(info),
       customButtons: {
         addEventButton: {
-          text: 'Add Event +',
+          text: 'Agendar Cita +',
           click: () => this.openModal()
         }
       },
@@ -173,4 +181,36 @@ export class CalenderComponent {
       `
     };
   }
+
+  dateValue: any;
+  timeValue = '';
+
+  handleDateChange(event: any) {
+    this.dateValue = event;
+    console.log('Date changed:', event);
+  }
+
+  handleTimeChange(event: any) {
+    this.timeValue = event.target.value;
+    console.log(this.timeValue);
+  }
+
+  onTimeSelected(time: string) {
+    console.log('Picked time:', time); // e.g. "10:45"
+  }
+
+  // Select particular code
+    doctors = [
+    { value: 'id', label: 'Guerrero Heredia' },
+    { value: 'id', label: 'Eladio Hernandez' },
+    { value: 'id', label: 'Cruz Jiminian' },
+  ];
+  selectedValue = '';
+  selectedValues: string[] = ['1', '3'];
+
+  handleSelectChange(value: string) {
+    this.selectedValue = value;
+    console.log('Selected value:', value);
+  }
+
 }
